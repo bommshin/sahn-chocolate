@@ -33,6 +33,13 @@
   input:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,75,0.15); }
   textarea { resize: vertical; min-height: 72px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 14px; }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .flavor .meta { padding: 7px 7px 9px; }
+    .flavor .fname { font-size: 11px; }
+    .flavor .ftag { font-size: 8px; padding: 1px 5px; }
+    .flavor .check { width: 22px; height: 22px; top: 5px; right: 5px; }
+  }
   .flavor { position: relative; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; background: #fff; overflow: hidden; transition: all .15s ease; user-select: none; }
   .flavor:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(58,42,30,.12); }
   .flavor input { position: absolute; opacity: 0; pointer-events: none; }
@@ -88,7 +95,6 @@
 <body>
 <div class="gate" id="gate">
   <div class="gate-card">
-    <img class="gate-photo" src="sahn.jpg" alt="Sahn" onerror="this.style.display='none'">
     <h2>🍫 A Sweet Little Survey</h2>
     <p>This page is private. Please enter the password to continue.</p>
     <input type="password" id="gatePw" placeholder="Password" autocomplete="off">
@@ -124,7 +130,7 @@
 </div>
 <script>
   // ===== Password gate =====
-  const GATE_PASSWORD = "sweetimothy";
+  const GATE_PASSWORD = "sweettimothy";
   (function initGate(){
     const gate = document.getElementById('gate');
     const pw = document.getElementById('gatePw');
