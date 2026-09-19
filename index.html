@@ -65,6 +65,7 @@
   .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(168,132,47,0.45); }
   .btn:active { transform: translateY(0); }
   .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+  .submit-reminder { text-align: center; font-size: 13px; font-weight: 600; color: var(--gold-dark); margin-bottom: 4px; }
   .footnote { text-align: center; color: #9db3c7; font-size: 12px; margin-top: 22px; }
   .gate { position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 24px;
     background: linear-gradient(160deg, #cfe6fa 0%, #eaf4fc 55%, #ffffff 100%); }
@@ -116,9 +117,10 @@
     <div class="grid" id="flavorGrid"></div>
     <div class="counter"><b id="count">0</b> of <b id="max"></b> selected</div>
     <div class="field" style="margin-top:24px;">
-      <label class="flabel" for="name">Your name (optional — so I know who voted!)</label>
-      <input type="text" id="name" name="respondent_name" placeholder="Your name">
+      <label class="flabel" for="name">✍️ Please add your name so we know who voted! <span style="color:#d9534f">*</span></label>
+      <input type="text" id="name" name="respondent_name" placeholder="Your name" required>
     </div>
+    <p class="submit-reminder">👉 Don’t forget to add your name above before submitting!</p>
     <button type="submit" class="btn" id="submitBtn">Submit My 1–2 Picks 🍫</button>
   </form>
   <div class="card thanks" id="thanks">
@@ -246,8 +248,13 @@
     if (picks.length === 0) {
       alert('Please pick 1–2 bars before submitting! 🍫'); return;
     }
+    const nameVal = document.getElementById('name').value.trim();
+    if (!nameVal) {
+      alert('Please add your name before submitting so we know who voted! ✍️');
+      document.getElementById('name').focus(); return;
+    }
     const payload = {
-      respondent_name: document.getElementById('name').value.trim() || 'Anonymous',
+      respondent_name: nameVal,
       flavors: picks, submitted_at: new Date().toLocaleString()
     };
     submitBtn.disabled = true; submitBtn.textContent = 'Submitting…';
