@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compartés Chocolate Bar Flavor Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #5aa9e6; --gold-dark: #2f7fc4; --ink: #17324a; --cocoa: #1f4e79;
+    --cream: #eaf4fc; --cream-card: #ffffff; --border: #d3e6f5; --muted: #6d8299;
+    --shadow: 0 8px 30px rgba(47, 127, 196, 0.12); --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(160deg, #cfe6fa 0%, #eaf4fc 55%, #ffffff 100%); color: var(--ink);
+    min-height: 100vh; padding: 32px 16px 64px; line-height: 1.5; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  .hero { text-align: center; color: var(--cocoa); margin-bottom: 28px; }
+  .hero .eyebrow { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 12px; }
+  .hero h1 { font-family: 'Poppins', sans-serif; font-size: 38px; font-weight: 700; line-height: 1.15; margin-bottom: 12px; letter-spacing: -0.5px; }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 540px; margin: 0 auto; }
+  .hero p.playful { margin-top: 12px; color: var(--gold-dark); font-weight: 700; font-size: 14.5px; background: #ffffff; display: inline-block; padding: 9px 18px; border-radius: 20px; box-shadow: 0 4px 14px rgba(47,127,196,0.15); border: 1.5px solid var(--border); }
+  .hero-photo { width: 100%; max-width: 620px; height: auto; object-fit: cover; border-radius: 24px; border: 6px solid #fff; outline: 3px solid var(--gold); margin: 0 auto 26px; display: block; box-shadow: 0 20px 55px rgba(47,127,196,0.35); }
+  .card { background: var(--cream-card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 26px; margin-bottom: 20px; }
+  .card h2 { font-family: 'Poppins', sans-serif; font-size: 26px; font-weight: 600; color: var(--cocoa); margin-bottom: 4px; }
+  .card .sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .field { margin-bottom: 18px; }
+  label.flabel { display: block; font-size: 13px; font-weight: 600; color: var(--cocoa); margin-bottom: 7px; }
+  input[type=text], textarea { width: 100%; padding: 11px 13px; border: 1px solid var(--border); border-radius: 9px; font-family: inherit; font-size: 14px; color: var(--ink); background: #fff; transition: border-color .15s, box-shadow .15s; }
+  input:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,162,75,0.15); }
+  textarea { resize: vertical; min-height: 72px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 14px; }
+  .flavor { position: relative; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; background: #fff; overflow: hidden; transition: all .15s ease; user-select: none; }
+  .flavor:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(58,42,30,.12); }
+  .flavor input { position: absolute; opacity: 0; pointer-events: none; }
+  .flavor .imgwrap { position: relative; width: 100%; aspect-ratio: 1/1; background: #f3ece0; overflow: hidden; }
+  .flavor .imgwrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s ease; }
+  .flavor:hover .imgwrap img { transform: scale(1.05); }
+  .flavor .check { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.85); border: 2px solid #fff; display: grid; place-items: center; transition: all .15s ease; backdrop-filter: blur(2px); }
+  .flavor .check svg { width: 14px; height: 14px; opacity: 0; transform: scale(.5); transition: all .15s ease; }
+  .flavor.checked { border-color: var(--gold); }
+  .flavor.checked .check { background: var(--gold); border-color: var(--gold); }
+  .flavor.checked .check svg { opacity: 1; transform: scale(1); }
+  .flavor.checked .imgwrap::after { content:''; position:absolute; inset:0; box-shadow: inset 0 0 0 3px var(--gold); }
+  .flavor .meta { padding: 10px 11px 12px; }
+  .flavor .fname { font-size: 12.5px; font-weight: 600; color: var(--cocoa); line-height: 1.25; display: block; }
+  .flavor .ftag { font-size: 9px; text-transform: uppercase; letter-spacing: .5px; color: var(--gold-dark); font-weight: 700; margin-top: 4px; display: inline-block; background:#fdf4e0; padding:2px 6px; border-radius:5px; }
+  .toolbar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .chip { font-size:12px; font-weight:600; color:var(--cocoa); background:#fff; border:1.5px solid var(--border); border-radius:20px; padding:6px 14px; cursor:pointer; transition:all .15s; }
+  .chip:hover { border-color:var(--gold); }
+  .chip.active { background:var(--gold); border-color:var(--gold); color:#fff; }
+  .counter { display: inline-block; margin-top: 18px; font-size: 13px; color: var(--muted); }
+  .counter b { color: var(--gold-dark); }
+  .btn { width: 100%; margin-top: 8px; padding: 15px; border: none; border-radius: 11px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; letter-spacing: .3px; cursor: pointer; transition: transform .12s, box-shadow .12s; box-shadow: 0 6px 18px rgba(168,132,47,0.35); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(168,132,47,0.45); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+  .footnote { text-align: center; color: #9db3c7; font-size: 12px; margin-top: 22px; }
+  .gate { position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; padding: 24px;
+    background: linear-gradient(160deg, #cfe6fa 0%, #eaf4fc 55%, #ffffff 100%); }
+  .gate.hidden { display: none; }
+  .gate-card { background: #fff; border-radius: 20px; box-shadow: 0 20px 55px rgba(47,127,196,0.30); padding: 40px 34px; max-width: 400px; width: 100%; text-align: center; }
+  .gate-photo { width: 110px; height: 110px; object-fit: cover; border-radius: 50%; border: 4px solid #fff; outline: 3px solid var(--gold); margin: 0 auto 18px; display: block; box-shadow: 0 8px 22px rgba(47,127,196,0.25); }
+  .gate-card h2 { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 700; color: var(--cocoa); margin-bottom: 6px; }
+  .gate-card p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .gate-card input { width: 100%; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 15px; color: var(--ink); text-align: center; }
+  .gate-card input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(90,169,230,0.18); }
+  .gate-card button { width: 100%; margin-top: 14px; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: #fff; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform .12s, box-shadow .12s; box-shadow: 0 6px 18px rgba(47,127,196,0.35); }
+  .gate-card button:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(47,127,196,0.45); }
+  .gate-err { color: #d9534f; font-size: 13px; font-weight: 600; margin-top: 12px; min-height: 18px; opacity: 0; transition: opacity .15s; }
+  .gate-err.show { opacity: 1; }
+
+  .footnote a { color: var(--gold); text-decoration: none; }
+  .thanks { display: none; text-align: center; padding: 40px 20px; }
+  .thanks.show { display: block; animation: fadeIn .5s ease both; }
+  .thanks .emoji { font-size: 56px; margin-bottom: 12px; }
+  .thanks h2 { font-size: 30px; }
+  .thanks p { color: var(--muted); margin-top: 8px; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .config-note { background: #fff8e8; border: 1px dashed var(--gold); border-radius: 10px; padding: 12px 14px; font-size: 12.5px; color: #7a5f1f; margin-bottom: 20px; }
+  .config-note b { color: var(--gold-dark); }
+  .config-note code { background: #f0e4c8; padding: 1px 5px; border-radius: 4px; font-size: 11.5px; }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <img class="gate-photo" src="sahn.jpg" alt="Sahn" onerror="this.style.display='none'">
+    <h2>🍫 A Sweet Little Survey</h2>
+    <p>This page is private. Please enter the password to continue.</p>
+    <input type="password" id="gatePw" placeholder="Password" autocomplete="off">
+    <button type="button" id="gateBtn">Unlock</button>
+    <div class="gate-err" id="gateErr">Incorrect password — try again.</div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-photo" id="heroPhoto" src="sahn.jpg" alt="Sahn" onerror="this.style.display='none'">
+    <div class="eyebrow">A Sweet Little Thank You</div>
+    <h1>Thank you for praying for<br>Sahn the past year.</h1>
+    <p>Please pick your <b>1–2 favorite</b> flavors below and help save mommy &amp; daddy from chocolate-picking decision fatigue! 🍫</p>
+  </div>
+  <form id="survey" class="card">
+    
+    <h2>Pick your bars</h2>
+    <div class="sub">All <b id="total"></b> bars from Compartés' collection. Please pick your <b>1–2 favorites</b>.</div>
+    <div class="grid" id="flavorGrid"></div>
+    <div class="counter"><b id="count">0</b> of <b id="max"></b> selected</div>
+    <div class="field" style="margin-top:24px;">
+      <label class="flabel" for="name">Your name (optional — so I know who voted!)</label>
+      <input type="text" id="name" name="respondent_name" placeholder="Your name">
+    </div>
+    <button type="submit" class="btn" id="submitBtn">Submit My 1–2 Picks 🍫</button>
+  </form>
+  <div class="card thanks" id="thanks">
+    <div class="emoji">🍫✨</div>
+    <h2>Thank you!</h2>
+    <p>Your chocolate picks have been recorded. Get ready for a delicious order.</p>
+  </div>
+  <div class="footnote">All flavors &amp; images from <a href="https://compartes.com/collections/chocolate-bars-premium" target="_blank" rel="noopener">Compartés Chocolatier</a>, Los Angeles.</div>
+</div>
+<script>
+  // ===== Password gate =====
+  const GATE_PASSWORD = "sweetimothy";
+  (function initGate(){
+    const gate = document.getElementById('gate');
+    const pw = document.getElementById('gatePw');
+    const btn = document.getElementById('gateBtn');
+    const err = document.getElementById('gateErr');
+    function tryUnlock(){
+      if (pw.value === GATE_PASSWORD){
+        gate.classList.add('hidden');
+        try { sessionStorage.setItem('sahn_unlocked','1'); } catch(e){}
+      } else {
+        err.classList.add('show'); pw.value=''; pw.focus();
+      }
+    }
+    btn.addEventListener('click', tryUnlock);
+    pw.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+    // stay unlocked for the session
+    try { if (sessionStorage.getItem('sahn_unlocked')==='1') gate.classList.add('hidden'); } catch(e){}
+    pw.focus();
+  })();
+
+  const FORMSPREE_ID = "xoevvbek";
+  const MAX_PICKS = 2; // each person may pick up to this many flavors
+  const FLAVORS = [
+    { name: "Donuts and Coffee", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Donuts-and-Coffee-Chocolate-Bar-Premium-Milk-Chocolates.jpg", tag: "" },
+    { name: "California Love Pretzel", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/California-Love-Gourmet-Chocolate-Bar-Dark-Chocolate-Pretzels-by-Compartes.jpg", tag: "Dark" },
+    { name: "Cookies and Cream", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Luxury-Chocolate-Bar-Oreo-Cookies-by-Compartes.jpg", tag: "" },
+    { name: "California Berries", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Premium-Dark-Chocolate-Bar-Berries-by-Compartes.jpg", tag: "" },
+    { name: "Campfire S'mores", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Dark-Chocolate-Bar-Smores-by-Compartes.jpg", tag: "Best Seller" },
+    { name: "Tiramisu", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Fancy-Chocolate-Bars-Milk-Chocolates-Tiramisu-by-Compartes.jpg", tag: "" },
+    { name: "Strawberry Shortcake", img: "https://cdn.shopify.com/s/files/1/0060/1862/products/Strawberry-Shortcake-Gourmet-Chocolate-Gift-Bar.jpg", tag: "" },
+    { name: "Strawberry Coconut", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/strawberry-coconut-gourmet-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Birthday Cake and Sprinkles", img: "https://cdn.shopify.com/s/files/1/0060/1862/products/Cake-Sprinkles-Chocolate-Bar.jpg", tag: "" },
+    { name: "Caramelized Popcorn", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/caramelized-popcorn-gourmet-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Chocolate Brownies", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/58190287-by-compartes.jpg", tag: "" },
+    { name: "Pink Elephants", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/pink-elephants-animal-cookie-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Marshmallow Crisp", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/marshmallow-crisp-crisped-rice-gourmet-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Cookie Butter", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/cookie-butter-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Potato Chip Crisp", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Potato_Chip_Milk_Chocolate_Bar_by_Compartes.jpg", tag: "Sweet & Salty" },
+    { name: "Matcha Green Tea", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Matcha-Chocolate-Bar-Luxury-Matcha-Infused-Chocolates-by-Compartes.jpg", tag: "White Choc" },
+    { name: "Cereal Bowl", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-White-Chocolate-Bar-Cereal-Bowl-Chocolates-by-Compartes.jpg", tag: "" },
+    { name: "The Everything Bar", img: "https://cdn.shopify.com/s/files/1/0060/1862/products/The-Everything-Chocolate-Bar-Compartes-Los-Angeles.jpg", tag: "" },
+    { name: "Malted Milkshake", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Chocolate-Bar-Milk-Chocolates-Malt-Balls-by-Compartes.jpg", tag: "" },
+    { name: "Salted Pistachio", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Dark-Chocolate-Bar-Salted-Pistachio-Vegan.jpg", tag: "Vegan" },
+    { name: "Crème Brûlée", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/creme-brulee-gourmet-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "English Toffee", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/gourmet-english-toffee-sea-salt-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Raspberry Rose", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/raspberry-rose-gourmet-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Lavender", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Fancy-Chocolate-Bars-Lavender-White-Chocolate-by-Compartes.jpg", tag: "" },
+    { name: "Peanut Butter Cup", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/peanut-butter-cup-luxury-milk-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Chocolate Chip Cookies", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/luxury-chocolate-chip-cookies-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Salted Caramel", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/salted-caramel-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Waffle Cone", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/coney-island-waffle-cone-luxury-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Peppermint", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Christmas-Chocolate-Bar-Gift-Peppermint-Bark-Dark-Chocolate-by-Compartes.jpg", tag: "" },
+    { name: "Old Hollywood Smoked Sea Salt", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Luxury-Dark-Chocolate-Bar-Smoked-Salt.jpg", tag: "" },
+    { name: "Churros & Horchata", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/churros-and-horchata-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Strawberry Champagne", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/strawberry-champagne-luxury-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Whiskey Cocktail", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Whiskey-Chocolate-Dark-Chocolate-Whisky-Infused-Chocolate-Bar-By-Compartes.jpg", tag: "Boozy" },
+    { name: "Coffee Crunch", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/coffee-crunch-luxury-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Sticky Toffee Pudding", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Fancy-Chocolate-Bar-Sticky-Toffee-by-Compartes.jpg", tag: "" },
+    { name: "Cinnamon Toast", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/gourmet-holiday-chocolate-bar-by-compartes.jpg", tag: "" },
+    { name: "German Chocolate Cake", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/german-coconut-pecan-gourmet-chocolate-cake-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Lemon Shortbread", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Chocolate-Bar-Lemon-Shortbread-by-Compartes.jpg", tag: "" },
+    { name: "Sugar Cookie", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/sugar-cookie-luxury-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Apple Pie", img: "https://cdn.shopify.com/s/files/1/0060/1862/products/Apple-Pie-Gourmet-Chocolate-Bar.jpg", tag: "" },
+    { name: "Pecan Pie Bourbon", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Pecan-Pie-Bourbon-Chocolate-Bar.jpg", tag: "" },
+    { name: "Mexican Hot Chocolate", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/mexican-hot-cayenne-cinnamon-luxury-chocolate-spicy-bar-gift-by-compartes.png", tag: "Spicy" },
+    { name: "Strawberry Cheesecake", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/strawberry-cheesecake-gourmet-chocolate-bar-gift-by-compartes.png", tag: "" },
+    { name: "Hot Cocoa Marshmallow", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/hot-cocoa-marshmallow-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Beverly Hills Hotel Salted Caramel", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/beverly-hills-hotel-best-chocolate-bar-salted-caramel-gift-by-compartes.png", tag: "" },
+    { name: "Scones & Jam", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/scones-and-jam-best-chocolate-bar-gift-by-compartes-2.png", tag: "" },
+    { name: "Orange Pepper (Vegan)", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Gourmet-Chocolate-Bar-Dark-Chocolate-Vegan-Orange-Peel-Spicy.jpg", tag: "Vegan" },
+    { name: "Seeded Sensation (Vegan)", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Vegan-Gourmet-Chocolate-Bar-Dark-Seeded-Sensation.jpg", tag: "Vegan" },
+    { name: "California Fruits & Nuts", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Vegan-Dark-Chocolate-Fruit-Nut-Gourmet-Chocolate-Bar-by-Compartes.jpg", tag: "" },
+    { name: "Tomato", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/Compartes-Tomato-Chocolate-Bar-1.jpg", tag: "Adventurous" },
+    { name: "Champagne", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/champagne-luxury-dark-chocolate-bar-gift-by-compartes-2.png", tag: "Boozy" },
+    { name: "Espresso Martini", img: "https://cdn.shopify.com/s/files/1/0060/1862/files/espresso-martini-vodka-best-chocolate-bar-gift-by-compartes-2.png", tag: "Boozy" }
+  ];
+  document.getElementById('total').textContent = FLAVORS.length;
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  const grid = document.getElementById('flavorGrid');
+  FLAVORS.forEach((f) => {
+    const lbl = document.createElement('label');
+    lbl.className = 'flavor';
+    lbl.innerHTML =
+      '<input type="checkbox" name="flavors" value="' + f.name.replace(/"/g,'&quot;') + '">' +
+      '<div class="imgwrap"><img src="' + f.img + '" alt="' + f.name + '" loading="lazy">' +
+      '<span class="check">' + CHECK + '</span></div>' +
+      '<div class="meta"><span class="fname">' + f.name + '</span>' +
+      (f.tag ? '<span class="ftag">' + f.tag + '</span>' : '') + '</div>';
+    const cb = lbl.querySelector('input');
+    cb.addEventListener('change', () => { lbl.classList.toggle('checked', cb.checked); enforceLimit(); updateCount(); });
+    grid.appendChild(lbl);
+  });
+  document.getElementById('max').textContent = MAX_PICKS;
+  const countEl = document.getElementById('count');
+  function checkedBoxes(){ return document.querySelectorAll('input[name=flavors]:checked'); }
+  function enforceLimit(){
+    const atMax = checkedBoxes().length >= MAX_PICKS;
+    document.querySelectorAll('.flavor').forEach(lbl => {
+      const cb = lbl.querySelector('input');
+      if (!cb.checked) {
+        cb.disabled = atMax;
+        lbl.style.opacity = atMax ? '0.45' : '';
+        lbl.style.pointerEvents = atMax ? 'none' : '';
+      }
+    });
+  }
+  function updateCount(){ countEl.textContent = checkedBoxes().length; }
+  const form = document.getElementById('survey');
+  const submitBtn = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const picks = [...document.querySelectorAll('input[name=flavors]:checked')].map(c => c.value);
+    if (picks.length === 0) {
+      alert('Please pick 1–2 bars before submitting! 🍫'); return;
+    }
+    const payload = {
+      respondent_name: document.getElementById('name').value.trim() || 'Anonymous',
+      flavors: picks, submitted_at: new Date().toLocaleString()
+    };
+    submitBtn.disabled = true; submitBtn.textContent = 'Submitting…';
+    if (FORMSPREE_ID) {
+      try {
+        const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ ...payload, flavors: picks.join(', ') })
+        });
+        if (!res.ok) throw new Error('Network'); showThanks();
+      } catch (err) {
+        submitBtn.disabled = false; submitBtn.textContent = 'Submit My Picks 🍫';
+        alert('Hmm, that did not go through. Check your connection and try again.');
+      }
+    } else {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = 'chocolate-survey-' + (payload.respondent_name.replace(/\s+/g,'_')) + '.json';
+      a.click(); URL.revokeObjectURL(url); showThanks();
+    }
+  });
+  function showThanks(){ form.style.display='none'; document.getElementById('thanks').classList.add('show'); window.scrollTo({top:0,behavior:'smooth'}); }
+</script>
+</body>
+</html>
